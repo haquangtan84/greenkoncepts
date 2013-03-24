@@ -1,0 +1,18 @@
+<div class="row">
+  <dl class="dl-horizontal span 4">
+    <dt>From</dt>
+    <dd>
+      <a href="#/user/{{feedback.f_from}}">{{feedback.f_from_detail.firstName}}
+        {{feedback.f_from_detail.lastName}}</a>
+    </dd>
+    <dt>Skill</dt>
+    <dd>{{feedback.f_name}}</dd>
+    <dt>Rating</dt>
+    <dd>
+      <i class="icon-thumbs-up" ng-show="feedback.f_rating == 1"></i><i
+        class="icon-thumbs-down" ng-show="feedback.f_rating == -1"></i>
+    </dd>
+    <dt>Comment</dt>
+    <dd>{{feedback.f_comment}}</dd>
+  </dl>
+</div>

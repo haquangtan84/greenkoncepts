@@ -1,0 +1,107 @@
+.main-features {
+  margin-top: 10px;
+}
+
+#user-detail .lead strong {
+  margin-left: 10px;
+}
+
+.primary-email {
+  font-weight: bold;
+}
+
+.modal-body {
+  padding-bottom: 40px;
+}
+
+[ng\:cloak], [ng-cloak], .ng-cloak {
+  display: none !important;
+}
+
+.textarea {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.name-filter {
+  position: absolute;
+}
+
+
+.alertCharacters{
+  color: #c09853;
+}
+
+@media (max-width: 480px) {
+  .modal .form-horizontal .controls {
+    margin-left: 0px;
+  }
+}
+
+@media (max-width: 767px) {
+  .modal .form-horizontal .controls {
+    margin-left: 0px;
+  }
+}
+
+@media (min-width: 980px)' and '@media (min-width: 1200px) {
+  .modal .form-horizontal .controls {
+    margin-left: 0px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .modal .form-horizontal .controls {
+    margin-left: 40px;
+  }
+}
+
+
+@media (min-width: 768px) and (max-width: 979px) {
+  .modal .form-horizontal .controls {
+    margin-left: 0px;
+  }
+}
+
+
+
+.modal {
+  width: auto;
+}
+.modal .modal-body {
+  max-height: 400px;
+  padding-bottom: 0px;
+}
+.modal .well {
+  padding: 0px;
+}
+.compose {
+  background: url("/img/misc_06.png") no-repeat left center;
+  width: 32px;
+  height: 32px;
+  padding: 8px 16px;
+}
+
+.actionSendFeedback {
+  padding-top: 2px;
+  float: right;
+  margin-right: 58px;
+  width: 87px;
+}
+
+.tagsManager {
+  float: left;
+}
+.actionSendFeedback label {
+  width: 55px;
+}
+
+.sendingFeedback .alert-success {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.sendingFeedback .alert-error  {
+  margin-left: 10px;
+  margin-right: 10px;
+}

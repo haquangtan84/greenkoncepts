@@ -1,0 +1,156 @@
+<div id="user-detail" class="row">
+  <div class="pull-right span2" ng-show="user.avatar">
+    <img ng-src="{{user.avatar}}" class="img-polaroid">
+  </div>
+  <div class="span6" ng-show="isEditable()">
+    <form class="form-horizontal" ng-submit="submit()">
+      <div class="control-group">
+        <label class="control-label" for="inputFirstName">First
+          Name</label>
+        <div class="controls">
+          <input type="text" id="inputFirstName"
+            placeholder="First Name" ng-model="user.firstName" required>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label" for="inputLastName">Last
+          Name</label>
+        <div class="controls">
+          <input type="text" id="inputLastName" placeholder="Last Name"
+            ng-model="user.lastName" required>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label" for="inputEmail">Email</label>
+        <div class="controls">
+          {{primaryEmail}}
+          <button class="btn btn-mini" type="button"
+            ng-click="openUpdateEmailModal()">Change</button>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label" for="inputProHeadline">Professional
+          Headline</label>
+        <div class="controls">
+          <input type="text" id="inputProHeadline"
+            placeholder="Professional Headline"
+            ng-model="user.proHeadline">
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label" for="inputCountry">Country</label>
+        <div class="controls">
+          <input type="text" id="inputCountry" placeholder="Country"
+            ng-model="user.country" required>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label" for="inputPostalCode">Postal
+          Code</label>
+        <div class="controls">
+          <input type="text" id="inputPostalCode"
+            placeholder="Postal Code" ng-model="user.postalCode">
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label" for="inputIndustry">Industry</label>
+        <div class="controls">
+          <select ng-model="user.industry" id="inputIndustry"
+            ng-options="industry for industry in industries">
+          </select>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label" for="inputPhone">Phone</label>
+        <div class="controls">
+          <input type="text" id="inputPhone" placeholder="Phone"
+            ng-model="user.phone">
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label" for="inputPhone">Address</label>
+        <div class="controls">
+          <textarea rows="3" id="inputAddress" placeholder="Address"
+            ng-model="user.address"></textarea>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Save
+          changes</button>
+      </div>
+    </form>
+  </div>
+  <div ng-hide="isEditable()">
+    <dl class="dl-horizontal">
+      <dt>First Name</dt>
+      <dd>{{user.firstName}}</dd>
+      <dt>Last Name</dt>
+      <dd>{{user.lastName}}</dd>
+      <!-- 
+      <dt ng-show="isConnection">Email</dt>
+      <dd ng-show="isConnection">{{user.email}}</dd>
+       -->
+      <dt ng-show="isConnection && user.proHeadline">Professional
+        Headline</dt>
+      <dd ng-show="isConnection && user.proHeadline">{{user.proHeadline}}</dd>
+      <dt ng-show="isConnection && user.country">Country</dt>
+      <dd ng-show="isConnection && user.country">{{user.country}}</dd>
+      <dt ng-show="isConnection && user.postalCode">Postal Code</dt>
+      <dd ng-show="isConnection && user.postalCode">{{user.postalCode}}</dd>
+      <dt ng-show="isConnection && user.industry">Industry</dt>
+      <dd ng-show="isConnection && user.industry">{{user.industry}}</dd>
+      <dt ng-show="isConnection && user.phone">Phone</dt>
+      <dd ng-show="isConnection && user.phone">{{user.phone}}</dd>
+      <dt ng-show="isConnection && user.address">Address</dt>
+      <dd ng-show="isConnection && user.address">{{user.address}}</dd>
+      <dt ng-show="isConnection && user.skills">Skills</dt>
+      <dd ng-show="isConnection && user.skills">{{user.skills}}</dd>
+    </dl>
+    <div ng-hide="isConnection">
+      <a class="btn btn-large" href="#/feedbacks/sendFeedback/{{user._id}}"><i
+        class="icon-envelope"></i> Send feedback to view this profile</a>
+    </div>
+  </div>
+  <p class="text-error">{{errMsg}}</p>
+  <p class="text-success">{{successMsg}}</p>
+</div>
+<div class="modal hide fade" id="updateEmail">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal"
+      aria-hidden="true">&times;</button>
+    <h3>Email Management</h3>
+  </div>
+  <div class="modal-body">
+    <form ng-submit="addNewEmail()">
+      <div class="input-append">
+        <input class="span2" id="appendedInputButton" type="email"
+          ng-model="newEmail" placeholder="Enter New Email">
+        <button class="btn" type="submit">Add!</button>
+      </div>
+    </form>
+    <table class="table table-condensed table-striped">
+      <tbody>
+        <tr ng-repeat="emailObj in user.emails">
+          <td ng-class="{'primary-email' : emailObj.primary}">{{emailObj.email}}
+            <span class="label" ng-hide="emailObj.verified">unverified</span>
+          </td>
+          <td><button type="button" class="btn btn-mini"
+              ng-hide="emailObj.primary"
+              ng-click="makePrimaryEmail(emailObj.email)">Make
+              Primary</button> <span class="btn btn-mini disabled"
+            ng-show="emailObj.primary">Primary Email</span></td>
+          <td>
+            <button type="button" class="close" aria-hidden="true"
+              ng-hide="emailObj.primary" ng-click="removeEmail($index)">&times;</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="modal-footer">
+    <p class="text-error">{{errMsg}}</p>
+    <p class="text-success">{{successMsg}}</p>
+    <button type="button" class="close" data-dismiss="modal"
+      aria-hidden="true">Close</button>
+  </div>
+</div>

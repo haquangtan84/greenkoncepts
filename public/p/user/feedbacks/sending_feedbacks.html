@@ -1,0 +1,58 @@
+<div class="row" id="sendingFeedbackForm" >
+  <div class="span8" ng-controller="SendFeedbackCtrl">    
+    <div class="well">        
+	    <form class="form-horizontal">			
+			
+			<div class="control-group">
+			  <div class="controls">
+				<span ng-show="!isAnon()"><strong>Share your feedback to {{userReceivingFeedback.firstName}} {{userReceivingFeedback.lastName}}</strong></span>
+				<span ng-show="isAnon()"><strong>Share your feedback</strong></span>
+									
+			  </div>   
+			</div>	
+			
+
+			<div class="control-group" ng-show="isAnon()">
+			  <div class="controls">
+				<input type="text" class="span3" ng-click="cleanData()" ng-model="userReceivingFeedback.email" id="userEmail" placeholder="Send to... (name or email address)" style="margin: 0 auto;" data-provide="typeahead" data-items="4">							
+			  </div>   
+			</div>
+
+			<div class="control-group">
+			  <div class="controls">
+				<textarea rows="5" ng-model="newFeedback.comment" class="span5" id="inputContent" type="text" placeholder="What feedback do you want to share?"></textarea>							
+			  </div>   
+			</div>
+
+			
+			
+			<div class="control-group">
+			   <div class="controls">
+				 <div class="tagsManager">
+				   <ul id="myTags">								 
+				   </ul>
+				 </div>
+				
+				 <div class="actionSendFeedback">							  
+				   <span id="counterForm"></span> <button type="submit" ng-click="sendFeedback()" class="btn btn-primary">Send</button>
+				 </div>
+			   </div>
+			 </div>
+
+			
+			 
+			  <div ng-show="showError" class="alert alert-error">
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+				{{message}}
+			  </div>
+			  <div ng-show="showSuccess" class="alert alert-success">
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+				{{message}}    
+			  </div>
+		  </form>
+  	  </div>
+  	</div> 	
+  <div class="span4">
+    <div ng-include="'p/user/invitation_form.html'"></div>
+  </div> 
+</div>   

@@ -1,0 +1,5 @@
+*.swp
+.git
+node_modules
+/.settings
+.sonar

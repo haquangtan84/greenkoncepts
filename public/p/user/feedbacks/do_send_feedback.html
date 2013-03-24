@@ -1,0 +1,65 @@
+<div class="row">
+  <div class="span8" ng-controller="SendFeedbackCtrl">
+    <h3 ng-show="!isAnon()">Share your feedback to
+      {{userReceivingFeedback.firstName}}</h3>
+    <div class="input-prepend" ng-show="isAnon()">
+      <span class="add-on"><i class="icon-envelope"> </i>Send
+        your feedback to</span> <input ng-model="userReceivingFeedback.email"
+        class="span2" id="inputIcon" type="text" placeholder="email">
+    </div>
+    <div class="container-fluid">
+      <div class="thumbnails ">
+        <div ng-repeat="s in userReceivingFeedback.skills_list"
+          class="span3">
+          <div class="thumbnail">
+            <h4>{{s.name}}</h4>
+            <div class="btn-group">
+              <label class="radio"> <input type="radio"
+                ng-model="s.rating" value="1"><i
+                class="icon-thumbs-up"></i><span>Kudos</span>
+              </label> <label class="radio"> <input type="radio"
+                ng-model="s.rating" value="-1"> <i
+                class="icon-thumbs-down"></i><span>warning</span>
+              </label>
+            </div>
+            <textarea ng-model="s.comment"
+              placeholder="Help {{userReceivingFeedback.firstName}} with specific feedback on {{s.name}}"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <h3>Rate a new skill</h3>
+        <div class="span3">
+          <div class="thumbnail">
+            <div class="controls">
+              <input type="text" ng-model="newFeedback.name"
+                placeholder="Rate a new skill..." class="input-large">
+            </div>
+            <label class="radio"> <input type="radio"
+              ng-model="newFeedback.rating" value="1"><i
+              class="icon-thumbs-up"></i><span>Kudos</span>
+            </label> <label class="radio"> <input type="radio"
+              ng-model="newFeedback.rating" value="-1"> <i
+              class="icon-thumbs-down"></i><span>warning</span>
+            </label>
+            <textarea ng-model="newFeedback.comment"
+              placeholder="Help {{userReceivingFeedback.firstName}} with specific feedback (280 characters max)"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="form-actions">
+        <a id="a-send-feedback" ng-disabled="loading" class="btn btn-primary" ng-click="sendFeedback()"><span
+          class="btn-label">Send feedback</span></a>
+      </div>
+      <div ng-show="showError" class="alert alert-error">
+        <p>{{message}}</p>    
+      </div>
+      <div ng-show="showSuccess" class="alert alert-success">
+        <p>{{message}}</p>    
+      </div>
+    </div>
+  </div>
+  <div class="span4">
+    <div ng-include="'p/user/invitation_form.html'"></div>
+  </div>
+</div>

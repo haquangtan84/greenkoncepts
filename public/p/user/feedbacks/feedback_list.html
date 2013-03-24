@@ -1,0 +1,28 @@
+<div class="well">
+  <p>Choose a Tag to filter By:</p>
+  <div class="row-fluid" style="padding-left:15px;">
+    <a class="label label-inverse" href="" style="margin-right: 5px;" 
+        ng-click="filterFeedbacksByTag('')">All</a>
+    <a ng-repeat="tag in tags" class="label label-info" href="" style="margin-right: 5px;" 
+        ng-click="filterFeedbacksByTag(tag)">{{tag.name}}</a>
+  </div>  
+</div>  
+<div class="row">
+  <ul class="unstyled">
+    <li style="padding: 10px 20px; border-bottom: 1px solid #EEE;"
+        ng-repeat="feedback in feedbacks">
+      <img ng-src="//www.gravatar.com/avatar/dab8b313df14097bf7643b176c6ee50e?d=retro"
+          style="float: left" height="50" width="50" >
+      <span style="display: block; position: relative; left: 10px; min-height: 50px">
+        <span style="display: block;">
+          <a href="#/feedback/list/{{feedback.feedback._id}}">{{feedback.feedback.f_comment}}</a> by 
+          <a href="#/user/{{feedback.feedback.f_from}}">{{feedback.from.firstName}} {{feedback.from.lastName}}</a>
+        </span>  
+        <span>{{feedback.feedback.comment}}</span>
+        <p>
+          <span ng-repeat="tag in feedback.feedback.tags" class="label label-info" style="margin-right: 5px;" >{{tag.name}}</span>      
+        </p>
+      </span>
+    </li>      
+  </ul>
+</div>

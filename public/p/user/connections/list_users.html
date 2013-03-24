@@ -1,0 +1,113 @@
+<div ng-controller="FeedbackListCtrl" class="row">
+  <h4>Invitations</h4>
+  <div class="span4"
+    ng-show="feedbacks.pendingReceivedFeedbacks.length > 0">
+    <h5>You have the following
+      {{feedbacks.pendingReceivedFeedbacks.length}} feedback(s) to
+      share:</h5>
+    <ul>
+      <li ng-repeat="feedback in feedbacks.pendingReceivedFeedbacks">You
+        must <a href="#/feedbacks/sendFeedback/{{feedback.f_from}}">send
+          feedback</a> to <a href="#/user/{{feedback.f_from}}">{{feedback.f_from_detail.firstName}}
+          {{feedback.f_from_detail.lastName}}</a> to view this feedback.
+      </li>
+    </ul>
+  </div>
+  <div class="span4" ng-show="feedbacks.pendingSentFeedbacks.length > 0">
+    <h5>You haven't received a response from these people</h5>
+    <ul class="text-info">
+      <li ng-repeat="feedback in feedbacks.pendingSentFeedbacks"><a
+        ng-hide="feedback.f_to_detail.isShadowUser"
+        href="#/user/{{feedback.f_to}}">{{feedback.f_to_detail.firstName}}
+          {{feedback.f_to_detail.lastName}}</a><span
+        ng-show="feedback.f_to_detail.isShadowUser">{{feedback.f_to_detail.emails[0].email}}</span>
+        <span class="btn btn-mini btn-primary"
+        ng-click="sendReminder(feedback.f_to)"><i
+          class="icon-envelope icon-white"></i>send reminder</span></li>
+    </ul>
+  </div>
+</div>
+<div class="row" ng-controller="UserLinkedInCtrl"
+  ng-show="isLoggedLinkedIn">
+  <h4>Invite a LinkedIn connection</h4>
+  <span class="btn btn-mini btn-primary"
+    ng-click="getUsersLinkedInConnections()">Show your
+    connections</span>
+  <div id="linkedin-connections-modal" class="modal hide fade">
+    <div class="modal-header">
+      <a class="close" data-dismiss="modal">&times;</a>
+      <h3>Your LinkedIn connections</h3>
+    </div>
+    <div class="modal-body">
+      <div ng-show="inviteConnectionsMessageShow"
+        class="alert alert-info">
+        <p>{{inviteConnectionsMessage}}</p>
+      </div>
+      <input id="search-connections" ng-change="doFilterConnections()"
+        ng-model="filter.criteria" type="text" class="search-query"
+        placeholder="Search by name, industry and headline"
+        style="margin-bottom: 10px; width: 300px;">
+      <ul
+        style="list-style-type: none; margin: 0px 0px 0px 0px; width: 470px">
+        <li ng-repeat="connection in linkedInConnections">
+          <div class="column-fluid">
+            <div class="well row-fluid">
+              <span class="span12 pull-left">
+                <p>
+                  {{connection.firstName}} {{connection.lastName}}<a
+                    href="#/feedbacks/sendFeedback/{{connection.linkedInId}}?type=linkedin"><span
+                    class="btn btn-mini pull-right"
+                    ng-click="sendFeedbackToLinkedInConnection(connection)">Send
+                      Invite</span></a>
+                </p>
+                <p>{{connection.industry}}</p>
+                <p>{{connection.proHeadline}}</p>
+              </span>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div class="modal-footer">
+      <a href="#" class="btn" data-dismiss="modal">Close</a>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <h4>Here are your connections:</h4>
+  <div class="media span4" ng-repeat="user in connections">
+    <a class="pull-left" href="#/user/{{user._id}}"> <img
+      height="48px" width="48px" class="media-object img-polaroid"
+      ng-src="{{user.avatar}}">
+    </a>
+    <div class="media-body">
+      <h4 class="media-heading">
+        <a href="#/user/{{user._id}}">{{user.firstName}}
+          {{user.lastName}}</a>&nbsp;&nbsp;<span class="badge">{{user.connections.length}}</span>
+      </h4>
+      <em class="muted" ng-show="user.proHeadline">{{user.proHeadline}}</em>
+      <a class="btn btn-mini" href="#/feedbacks/sendFeedback/{{user._id}}"><i
+        class="icon-envelope"></i> send feedback</a>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <h4>Here are All Users:</h4>
+  <div class="media span4" ng-repeat="user in users">
+    <a class="pull-left" href="#/user/{{user._id}}"> <img
+      height="48px" width="48px" class="media-object img-polaroid"
+      ng-src="{{user.avatar}}">
+    </a>
+    <div class="media-body">
+      <h4 class="media-heading">
+        <a href="#/user/{{user._id}}">{{user.firstName}}
+          {{user.lastName}}</a>
+      </h4>
+      <a class="btn btn-mini" href="#/feedbacks/sendFeedback/{{user._id}}"><i
+        class="icon-envelope"></i> send feedback</a>
+    </div>
+  </div>
+</div>
+<h4>Invite Your Friend!</h4>
+<a class="btn btn-mini" href="#/feedbacks/sendFeedback"><i
+  class="icon-comment"></i>Send Feedback to your friend</a>

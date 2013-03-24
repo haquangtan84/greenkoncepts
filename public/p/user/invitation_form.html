@@ -1,0 +1,18 @@
+<div class="well" id="invitation" ng-controller="SendInviteCtrl">
+	<form id="invite-side" class="form-vertical" ng-submit="submit()">
+		<h4>Invite a trusted connection</h4>		
+		<div class="control-group">
+			<div class="controls">
+				<input type="text" class="input-large" placeholder="First name" ng-model="user.firstname">
+				<input type="email" class="input-large" placeholder="name@domain.com" ng-model="user.email" required>
+			</div>
+		</div>
+			<button ng-disabled="loading" id="button-send" class="btn btn-primary" type="submit">Send invite</button>
+	</form>
+	<div ng-show="showError" class="alert alert-error">
+			<p>{{message}}</p>    
+	</div>
+	<div ng-show="showSuccess" class="alert alert-success">
+			<p>{{message}}</p>    
+	</div>
+</div>

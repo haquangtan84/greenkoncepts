@@ -1,0 +1,18 @@
+<div class="row">
+  <div class="span8">
+    <p>Outcoming emails :</p>
+    <ul id="emails">
+      <li ng-repeat="email in emails">
+        <h5>FROM: 
+          <p>{{email.from}}</p>
+        </h5>
+        <h5>TO: 
+          <p>{{email.to}}</p>
+        </h5>
+        <h5>SUBJECT: 
+          <p>{{email.subject}}</p>
+        </h5>
+      </li>
+    </ul>
+  </div>
+</div>

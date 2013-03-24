@@ -1,0 +1,68 @@
+<div class="row">
+  <h3>Activity Stream</h3>
+  <span ng-show="streams != undefined && streams.length == 0">Nothing much happening here! Start by 
+    <strong>
+      <a ng-click="onShareFeedbackClick()">sharing a feedback</a>
+    </strong>
+    with one of your trusted connections.
+  </span>
+  <ul class="unstyled" ng-show="streams != undefined && streams.length > 0">
+    <li style="padding: 10px 20px; border-bottom: 1px solid #EEE;"
+      ng-repeat="stream in streams"><img
+      ng-src="{{stream.subjectData.avatar}}" style="float: left"
+      height="50" width="50" /> 
+      <span ng-show="stream.actionType == 'feedbackReceived' || stream.actionType == 'feedbackSent'">
+        <span style="display: block; position: relative; left: 10px; min-height: 50px">
+          <span style="display: block;">
+            <span ng-hide="stream.objectId == root.loggedUser._id && stream.actionType=='feedbackReceived'">
+              <strong>
+                <a href="#/user/{{stream.subjectData._id}}">{{stream.subjectData.firstName}} {{stream.subjectData.lastName}}</a>
+              </strong> 
+              <span ng-switch on="stream.actionType">
+                <span ng-switch-when="feedbackReceived"> received a feedback from </span>
+                <span ng-switch-when="feedbackSent">sent a feedback to </span>
+                <span ng-switch-default> ...</span>
+              </span>
+              <span ng-show="stream.objectData.isShadowUser == true">a new user</span>
+              <a ng-hide="stream.objectId == root.loggedUser._id || stream.objectData.isShadowUser == true" href="#/user/{{stream.objectData._id}}">
+                <strong>{{stream.objectData.firstName}} {{stream.objectData.lastName}}</strong>
+              </a>
+              <span ng-show="stream.objectId == root.loggedUser._id">you</span>
+            </span>
+            <span ng-show="stream.objectId == root.loggedUser._id && stream.actionType=='feedbackReceived'">
+              You sent a feedback to 
+              <span ng-show="stream.subjectData.isShadowUser == true">a new user</span>
+              <strong>
+                <a ng-hide="stream.subjectData.isShadowUser == true" href="#/user/{{stream.subjectData._id}}">{{stream.subjectData.firstName}} {{stream.subjectData.lastName}}</a>
+              </strong>
+            </span> 
+          </span> 
+          <span ng-repeat="tag in stream.f_tags" class="label label-info" style="margin-right: 5px;" >{{tag.name}}</span>
+          <p>
+            <span ng-show="stream.showFeedback">
+              <span ng-repeat="line in stream.actionData.comment.split('\n')">
+                {{line}}<br/>
+              </span>
+            </span>
+          </p>
+        </span>
+      </span> 
+      <span ng-show="stream.actionType == 'newConnection'"> 
+        <span style="display: block; position: relative; left: 10px; min-height: 50px">
+          <strong><a href="#/user/{{stream.subjectData._id}}">{{stream.subjectData.firstName}} {{stream.subjectData.lastName}}</a></strong> became a connection
+        </span>
+      </span>
+      <span ng-show="stream.actionType == 'newConnection-other-friends'"> 
+        <span style="display: block; position: relative; left: 10px; min-height: 50px">
+          <strong>
+            <a href="#/user/{{stream.objectData._id}}">{{stream.objectData.firstName}} {{stream.objectData.lastName}}</a>
+          </strong> 
+          is now connected to
+          <strong>
+            <a href="#/user/{{stream.subjectData._id}}">{{stream.subjectData.firstName}} {{stream.subjectData.lastName}}</a>
+          </strong>
+        </span>
+      </span>
+    </li>  
+  </ul>
+</div>
