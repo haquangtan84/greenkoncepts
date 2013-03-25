@@ -8,7 +8,7 @@ app.config([ '$routeProvider', function($routeProvider) {
     controller : HomeCtrl
   }).when('/node', {
     templateUrl : 'p/public/node.html',
-    controller : HomeCtrl
+    controller : NodeCtrl
   }).when('/light', {
     templateUrl : 'p/public/light.html',
     controller : HomeCtrl
