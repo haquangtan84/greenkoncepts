@@ -38,6 +38,8 @@
 		success: function (response) {
 		  var cmdb = response["cmdb"];
 		  var list = "";
+		  var relayStatus = "";
+		  var title = "";
 		  $.each(cmdb, recurse);
           
 		  function recurse(key, val) {
@@ -47,7 +49,15 @@
 				$.each(val, recurse);
 				list += "</ul>";
 			} else {
-				list += "<a href=\"#node\" data-toggle=\"tooltip\" title=\""+val+"\" data-original-title=\"Default tooltip\">" + key + "</a>";
+				if(key=="relayStatus") relayStatus = val;
+				if(key=="name" && val.indexOf("Control-GKC") >=0) {
+				  if(relayStatus==0)
+				    title = "Click here to turn on the light for this node";
+				  else
+				    title = "Click here to turn off the light for this node";
+				  list += "<a href=\"#node\" data-toggle=\"tooltip\" title=\""+title+"\" data-original-title=\"Default tooltip\">" + key + "</a>";
+			  }
+				else list += "<span data-toggle=\"tooltip\" title=\""+val+"\" data-original-title=\"Default tooltip\">" + key + "</span>";
 			}
 			list += "</li>";
 		  }
