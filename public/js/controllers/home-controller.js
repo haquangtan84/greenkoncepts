@@ -1,8 +1,11 @@
 'use strict';
 
-function HomeCtrl($scope, $http, $location) {
-  $(document).ready(function() {
+function HomeCtrl($route, $scope, $http, $location) {
 	  
+	  $scope.chart;
+	  $scope.chartData = [];
+	  
+  $(document).ready(function() { 
 	   $.ajax({
 		url: 'http://test.greenkoncepts.com/ems/services/ResourceService/binnedEvents?key=2.1363230012.d593eb3472e8f0b8346fae1bf53aa4e38f6d96f4&nodeNames=ci_gkoffice&beginDate=1363143611618&endDate=1363230011619&binEnum=1&dataNames=Energy&callerID=callerID',
 		type: 'GET',
@@ -12,9 +15,7 @@ function HomeCtrl($scope, $http, $location) {
 		success: function (response) {
 		  var eventBean = response["eventBean"];
 		  
-		  var chartData = [];
-		  var lineChartData = [];
-		  var chart;
+		  
 		  $.each(eventBean, function(i,object) {
 			var timestamp = object["timestamp"];
 			var time = timestamp["time"];
@@ -34,29 +35,29 @@ function HomeCtrl($scope, $http, $location) {
 			else if(value > 500) color = "#0D8ECF";
 			else color = "#0D8ECF";
 		
-			chartData.push({
+			$scope.chartData.push({
 			  hour: time + " hour",
 			  value: value,
 			  color: color
 			});
 		  });
-
 		  //Building the column chart
-		  AmCharts.ready(function() {
-			// SERIAL CHART
-			chart = new AmCharts.AmSerialChart();
-			chart.dataProvider = chartData;
-			chart.categoryField = "hour";
-			chart.marginRight = 0;
-			chart.marginTop = 0;    
-			chart.autoMarginOffset = 0;
-			// the following two lines makes chart 3D
-			chart.depth3D = 20;
-			chart.angle = 30;
-
+		  //AmCharts.ready(function() {
+			
+			// SERIAL $scope.chart
+			$scope.chart = new AmCharts.AmSerialChart();
+			$scope.chart.dataProvider = $scope.chartData;
+			$scope.chart.categoryField = "hour";
+			$scope.chart.marginRight = 0;
+			$scope.chart.marginTop = 0;    
+			$scope.chart.autoMarginOffset = 0;
+			// the following two lines makeschart 3D
+			$scope.chart.depth3D = 20;
+			$scope.chart.angle = 30;
+            
 			// AXES
 			// category
-			var categoryAxis = chart.categoryAxis;
+			var categoryAxis = $scope.chart.categoryAxis;
 			categoryAxis.labelRotation = 90;
 			categoryAxis.dashLength = 5;
 			categoryAxis.gridPosition = "start";
@@ -65,7 +66,7 @@ function HomeCtrl($scope, $http, $location) {
 			var valueAxis = new AmCharts.ValueAxis();
 			valueAxis.title = "Energy";
 			valueAxis.dashLength = 5;
-			chart.addValueAxis(valueAxis);
+			$scope.chart.addValueAxis(valueAxis);
 
 			// GRAPH            
 			var graph = new AmCharts.AmGraph();
@@ -75,14 +76,16 @@ function HomeCtrl($scope, $http, $location) {
 			graph.type = "column";
 			graph.lineAlpha = 0;
 			graph.fillAlphas = 1;
-			chart.addGraph(graph);
-
+			$scope.chart.addGraph(graph);
+            
 			// WRITE
-			chart.write("chartdiv");
-		  });
-		  //End of the column chart 
+			$scope.chart.write("chartdiv");
+			
+		  //});
+		  //End of the column $scope.chart 
 		},
 		error: function (response) {
+		  console.log(response);
 		}
 	  });	
   });

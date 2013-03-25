@@ -47,7 +47,7 @@
 				$.each(val, recurse);
 				list += "</ul>";
 			} else {
-				list += "<a href=\"#\" data-toggle=\"tooltip\" title=\""+val+"\" data-original-title=\"Default tooltip\">" + key + "</a>";
+				list += "<a href=\"#node\" data-toggle=\"tooltip\" title=\""+val+"\" data-original-title=\"Default tooltip\">" + key + "</a>";
 			}
 			list += "</li>";
 		  }
