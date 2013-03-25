@@ -2,11 +2,11 @@
 
  function NodeCtrl($scope, $http, $location) {
    $(document).ready(function() {
-
-	   $scope.treeContent = "";
+       
+		
+	   
 
 	   function traverse(o) {
-		 $scope.treeContent+= "<ul>";
 		 for (var i in o) {       
 		   if (typeof(o[i])=="object") {         
 			 if(o[i]["displayName"]) {
@@ -14,11 +14,14 @@
 			   var display = o[i]["display"];
 			   console.log(display + " ========= " + displayName);
 			   $scope.treeContent+= "<li>" + displayName + "</li>";
+			   $scope.treeContent+= "<ul>";
 			   traverse(o[i] );
 			   $scope.treeContent+= "</ul>";
+			   
 			 } else {
-				 $scope.treeContent+= "</ul>";
+				 $scope.treeContent+= "<ul>";				 
 				 traverse(o[i]);
+				 $scope.treeContent+= "</ul>";
 			 }
 		   }
 		 }     
@@ -33,20 +36,34 @@
 		crossDomain: true,
 		jsonpCallback: 'jsonpCallback',
 		success: function (response) {
-
-
 		  var cmdb = response["cmdb"];
-		  traverse(cmdb);
-		  //$("#treeDiv").html($scope.treeContent);
-		  
-          $(function() {
+		  var list = "";
+		  $.each(cmdb, recurse);
+          
+		  function recurse(key, val) {
+			list += "<li>";
+			if (val instanceof Object) {
+				list += key + "<ul>";
+				$.each(val, recurse);
+				list += "</ul>";
+			} else {
+				list += "<a href=\"#\" data-toggle=\"tooltip\" title=\""+val+"\" data-original-title=\"Default tooltip\">" + key + "</a>";
+			}
+			list += "</li>";
+		  }
+		  //Fill all of control nodes list
+		  $("#tree").html(list);		
+		  //Init tree 
+		  $(function() {
 			$("#tree").treeview({
 				collapsed: true,
 				animated: "medium",
 				control:"#sidetreecontrol",
 				persist: "location"
 			});
-		  })
+		  });
+		  $("[data-toggle='tooltip']").tooltip();  
+          
 		},
 		error: function (response) {
 		}
