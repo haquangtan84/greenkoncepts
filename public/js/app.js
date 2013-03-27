@@ -9,6 +9,9 @@ app.config([ '$routeProvider', function($routeProvider) {
   }).when('/node', {
     templateUrl : 'p/public/node.html',
     controller : NodeCtrl
+  }).when('/flash', {
+    templateUrl : 'p/public/flash.html',
+    controller : FlashCtrl
   }).when('/light', {
     templateUrl : 'p/public/light.html',
     controller : HomeCtrl
