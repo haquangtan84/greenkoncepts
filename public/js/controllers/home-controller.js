@@ -35,7 +35,8 @@ function HomeCtrl($route, $scope, $http, $location) {
 			else if(value > 1000) color = "#04D215";
 			else if(value > 500) color = "#0D8ECF";
 			else color = "#0D8ECF";
-		
+			value = value / 1000;
+		    value = Math.round(value*100)/100;
 			$scope.chartData.push({
 			  hour: time + " hour",
 			  value: value,
@@ -73,7 +74,7 @@ function HomeCtrl($route, $scope, $http, $location) {
 			var graph = new AmCharts.AmGraph();
 			graph.valueField = "value";
 			graph.colorField = "color";
-			graph.balloonText = "[[hour]] : [[value]] WH";
+			graph.balloonText = "[[hour]] : [[value]] kWh";
 			graph.type = "column";
 			graph.lineAlpha = 0;
 			graph.fillAlphas = 1;

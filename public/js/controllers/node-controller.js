@@ -12,7 +12,6 @@
 			 if(o[i]["displayName"]) {
 			   var displayName = o[i]["displayName"];
 			   var display = o[i]["display"];
-			   console.log(display + " ========= " + displayName);
 			   $scope.treeContent+= "<li>" + displayName + "</li>";
 			   $scope.treeContent+= "<ul>";
 			   traverse(o[i] );
@@ -55,9 +54,9 @@
 				    title = "Click here to turn on the light for this node";
 				  else
 				    title = "Click here to turn off the light for this node";
-				  list += "<a href=\"#node\" data-toggle=\"tooltip\" title=\""+title+"\" data-original-title=\"Default tooltip\">" + key + "</a>";
+				  list += "<a href=\"#node\" data-toggle=\"tooltip\" title=\""+title+"\" data-original-title=\"Default tooltip\">" + val + "</a>";
 			  }
-				else list += "<span data-toggle=\"tooltip\" title=\""+val+"\" data-original-title=\"Default tooltip\">" + key + "</span>";
+				else list += "<span data-toggle=\"tooltip\" title=\""+val+"\" data-original-title=\"Default tooltip\">" + val + "</span>";
 			}
 			list += "</li>";
 		  }
