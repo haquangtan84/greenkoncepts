@@ -2,29 +2,6 @@
 
  function NodeCtrl($scope, $http, $location) {
    $(document).ready(function() {
-       
-		
-	   
-
-	   function traverse(o) {
-		 for (var i in o) {       
-		   if (typeof(o[i])=="object") {         
-			 if(o[i]["displayName"]) {
-			   var displayName = o[i]["displayName"];
-			   var display = o[i]["display"];
-			   $scope.treeContent+= "<li>" + displayName + "</li>";
-			   $scope.treeContent+= "<ul>";
-			   traverse(o[i] );
-			   $scope.treeContent+= "</ul>";
-			   
-			 } else {
-				 $scope.treeContent+= "<ul>";				 
-				 traverse(o[i]);
-				 $scope.treeContent+= "</ul>";
-			 }
-		   }
-		 }     
-	   }  
 	   
 	   String.prototype.replaceAll = function( token, newToken, ignoreCase ) {
 			var _token;
@@ -67,7 +44,9 @@
 		  var cmdb = response["cmdb"];
 		  var list = "";
 		  var relayStatus = "";
+		  var name = "";
 		  var title = "";
+		  var icon = "";
 		  $.each(cmdb, recurse);
           
 		  function recurse(key, val) {
@@ -78,15 +57,23 @@
 					list += "</ul>";
 				} else {
 					if(key=="relayStatus") relayStatus = val;
-					if(key=="name" || key=="displayName") {
-						if(key=="name" && val.indexOf("Control-GKC") >=0) {
-						  if(relayStatus==0)
+					if(key=="name") name = val;
+					if(key=="displayName") {
+						//if(name.indexOf("Control-GKC") >=0) {
+						  if(relayStatus==0) {
 							title = "Click here to turn on the light for this node";
-						  else
+							icon = "1364470296_23413.ico";
+							list += "<a href=\"#node\" data-toggle=\"tooltip\" title=\""+title+"\" data-original-title=\"Default tooltip\">" + val + " <img src=\"../../img/"+icon+"\" style=\"with:20px;height:20px;\"></img></a>";
+						 } else if(relayStatus==1) {
 							title = "Click here to turn off the light for this node";
-						  list += "<a href=\"#node\" data-toggle=\"tooltip\" title=\""+title+"\" data-original-title=\"Default tooltip\">" + val + "</a>";
-						}
-						else list += "<span data-toggle=\"tooltip\" title=\""+val+"\" data-original-title=\"Default tooltip\">" + val + "</span>";
+							icon = "1364470318_6074.ico";
+							list += "<a href=\"#node\" data-toggle=\"tooltip\" title=\""+title+"\" data-original-title=\"Default tooltip\">" + val + " <img src=\"../../img/"+icon+"\" style=\"with:20px;height:20px;\"></img></a>";
+						 } else {
+						   icon = "1364470339_MB__light.png";	
+						   title = "This light is not able to use";
+						   list += "<a href=\"#node\" data-toggle=\"tooltip\" title=\""+title+"\" data-original-title=\"Default tooltip\">" + val + " <img src=\"../../img/"+icon+"\" style=\"with:18px;height:18px;\"></img></a>";					  
+						 }
+						//else list += "<span data-toggle=\"tooltip\" title=\""+val+"\" data-original-title=\"Default tooltip\">" + val + " <img src=\"../img/1364470318_6074.ico\" style=\"with:20px;height:20px;\"></img></span>";
 					}
 				}
 				list += "</li>";

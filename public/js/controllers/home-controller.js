@@ -3,7 +3,6 @@
 function HomeCtrl($route, $scope, $http, $location) {
 	  
 	  $scope.chart;
-	  $scope.pieChart;
 	  $scope.chartData = [];
 	  
   $(document).ready(function() { 
@@ -38,7 +37,7 @@ function HomeCtrl($route, $scope, $http, $location) {
 			value = value / 1000;
 		    value = Math.round(value*100)/100;
 			$scope.chartData.push({
-			  hour: time + " hour",
+			  hour: time + ":00",
 			  value: value,
 			  color: color
 			});
@@ -80,21 +79,11 @@ function HomeCtrl($route, $scope, $http, $location) {
 			graph.fillAlphas = 1;
 			$scope.chart.addGraph(graph);
 			
-			// PIE CHART
-			$scope.pieChart = new AmCharts.AmPieChart();
-			$scope.pieChart.dataProvider = $scope.chartData;
-			$scope.pieChart.titleField = "hour";
-			$scope.pieChart.valueField = "value";
-			$scope.pieChart.outlineColor = "#FFFFFF";
-			$scope.pieChart.outlineAlpha = 0.8;
-			$scope.pieChart.outlineThickness = 2;
-			// this makes the chart 3D
-			$scope.pieChart.depth3D = 15;
-			$scope.pieChart.angle = 30;
+			
             
 			// WRITE
 			$scope.chart.write("chartdiv");
-			$scope.pieChart.write("pieChart");
+			
 			
 		  //});
 		  //End of the column $scope.chart 
