@@ -24,7 +24,36 @@
 			 }
 		   }
 		 }     
-	   }      
+	   }  
+	   
+	   String.prototype.replaceAll = function( token, newToken, ignoreCase ) {
+			var _token;
+			var str = this + "";
+			var i = -1;
+
+			if ( typeof token === "string" ) {
+
+				if ( ignoreCase ) {
+
+					_token = token.toLowerCase();
+
+					while( (
+						i = str.toLowerCase().indexOf(
+							token, i >= 0 ? i + newToken.length : 0
+						) ) !== -1
+					) {
+						str = str.substring( 0, i ) +
+							newToken +
+							str.substring( i + token.length );
+					}
+
+				} else {
+					return this.split( token ).join( newToken );
+				}
+
+			}
+		return str;
+		};
 
 
 	   $.ajax({
@@ -42,24 +71,29 @@
 		  $.each(cmdb, recurse);
           
 		  function recurse(key, val) {
-			list += "<li>";
-			if (val instanceof Object) {
-				list += key + "<ul>";
-				$.each(val, recurse);
-				list += "</ul>";
-			} else {
-				if(key=="relayStatus") relayStatus = val;
-				if(key=="name" && val.indexOf("Control-GKC") >=0) {
-				  if(relayStatus==0)
-				    title = "Click here to turn on the light for this node";
-				  else
-				    title = "Click here to turn off the light for this node";
-				  list += "<a href=\"#node\" data-toggle=\"tooltip\" title=\""+title+"\" data-original-title=\"Default tooltip\">" + val + "</a>";
-			  }
-				else list += "<span data-toggle=\"tooltip\" title=\""+val+"\" data-original-title=\"Default tooltip\">" + val + "</span>";
-			}
-			list += "</li>";
+				list += "<li>";
+				if (val instanceof Object) {
+					list += key + "<ul>";
+					$.each(val, recurse);
+					list += "</ul>";
+				} else {
+					if(key=="relayStatus") relayStatus = val;
+					if(key=="name" || key=="displayName") {
+						if(key=="name" && val.indexOf("Control-GKC") >=0) {
+						  if(relayStatus==0)
+							title = "Click here to turn on the light for this node";
+						  else
+							title = "Click here to turn off the light for this node";
+						  list += "<a href=\"#node\" data-toggle=\"tooltip\" title=\""+title+"\" data-original-title=\"Default tooltip\">" + val + "</a>";
+						}
+						else list += "<span data-toggle=\"tooltip\" title=\""+val+"\" data-original-title=\"Default tooltip\">" + val + "</span>";
+					}
+				}
+				list += "</li>";
+
 		  }
+		  list = list.replaceAll("<li></li>","");
+		  list = list.replaceAll("<ul></ul>","");
 		  //Fill all of control nodes list
 		  $("#tree").html(list);		
 		  //Init tree 
