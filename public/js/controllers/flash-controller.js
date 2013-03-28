@@ -14,7 +14,7 @@ function FlashCtrl($route, $scope, $http, $location) {
 		attributes.id = "amChartsSources";
 		attributes.name = "amChartsSources";
 		attributes.align = "middle";
-		swfobject.embedSWF("amChartsSources.swf", "flashContent", "100%", "100%", swfVersionStr, xiSwfUrlStr, flashvars, params, attributes);
+		swfobject.embedSWF("amChartsSources.swf", "flashContent", "1000", "480", swfVersionStr, xiSwfUrlStr, flashvars, params, attributes);
 		swfobject.createCSS("#flashContent", "display:block;text-align:left;");
 	///});
 }
