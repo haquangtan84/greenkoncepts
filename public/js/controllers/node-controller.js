@@ -42,24 +42,46 @@
 		jsonpCallback: 'jsonpCallback',
 		success: function (response) {
 		  var cmdb = response["cmdb"];
+		  var children = cmdb["children"];
 		  var list = "";
 		  var relayStatus = "";
 		  var name = "";
 		  var title = "";
 		  var icon = "";
-		  $.each(cmdb, recurse);
+		  
+		 function parseConfig(configs) {
+			list += "<li>";
+			if(configs["displayName"]) {
+			  list += configs["displayName"];
+			  console.log("  =====  " + configs["displayName"])
+		    } 
+			for (var element in configs) {				  
+				if (typeof(configs[element]) == "object") {
+					list += "<ul>";
+					parseConfig(configs[element]);
+					list += "</ul>";
+				}
+			}
+			list += "</li>";
+		 }
+		 parseConfig(cmdb);
+		  
+
+		  /*$.each(children, recurse);
           
 		  function recurse(key, val) {
 				list += "<li>";
 				if (val instanceof Object) {
-					list += key + "<ul>";
+					if(key=="displayName")
+					  list+= val + "<ul>";
+					else
+					  list += "<ul>";
 					$.each(val, recurse);
 					list += "</ul>";
 				} else {
 					if(key=="relayStatus") relayStatus = val;
 					if(key=="name") name = val;
 					if(key=="displayName") {
-						//if(name.indexOf("Control-GKC") >=0) {
 						  if(relayStatus==0) {
 							title = "Click here to turn on the light for this node";
 							icon = "1364470296_23413.ico";
@@ -73,14 +95,14 @@
 						   title = "This light is not able to use";
 						   list += "<a href=\"#node\" data-toggle=\"tooltip\" title=\""+title+"\" data-original-title=\"Default tooltip\">" + val + " <img src=\"../../img/"+icon+"\" style=\"with:18px;height:18px;\"></img></a>";					  
 						 }
-						//else list += "<span data-toggle=\"tooltip\" title=\""+val+"\" data-original-title=\"Default tooltip\">" + val + " <img src=\"../img/1364470318_6074.ico\" style=\"with:20px;height:20px;\"></img></span>";
 					}
 				}
 				list += "</li>";
 
-		  }
+		  }*/
 		  list = list.replaceAll("<li></li>","");
 		  list = list.replaceAll("<ul></ul>","");
+		  console.log(list);
 		  //Fill all of control nodes list
 		  $("#tree").html(list);		
 		  //Init tree 
