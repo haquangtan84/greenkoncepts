@@ -5,6 +5,13 @@ function HomeCtrl($route, $scope, $http, $location) {
 	  $scope.chart;
 	  $scope.chartData = [];
 	  
+	  $scope.total = 0;
+
+	  var startDate = new Date(1363143611618);
+	  $scope.startTime = startDate.toUTCString();
+	  var endDate = new Date(1363230011619);
+	  $scope.endTime = endDate.toUTCString();
+	  
   $(document).ready(function() { 
 	   $.ajax({
 		url: 'http://test.greenkoncepts.com/ems/services/ResourceService/binnedEvents?key=2.1363230012.d593eb3472e8f0b8346fae1bf53aa4e38f6d96f4&nodeNames=ci_gkoffice&beginDate=1363143611618&endDate=1363230011619&binEnum=1&dataNames=Energy&callerID=callerID',
@@ -19,9 +26,11 @@ function HomeCtrl($route, $scope, $http, $location) {
 		  $.each(eventBean, function(i,object) {
 			var timestamp = object["timestamp"];
 			var time = timestamp["time"];
-			var d = new Date();
-			d.setMilliseconds(time);
-			time = d.getUTCHours();
+			var d = new Date(time);
+            var minutes = d.getUTCMinutes();
+			if(minutes < 10) minutes = "0" + minutes;
+			time = d.getUTCHours() + ":" + minutes;
+			
 			var dataBean = object["dataBean"];
 			var value = dataBean[0]["value"];
 			var units = dataBean[0]["units"];
@@ -36,12 +45,15 @@ function HomeCtrl($route, $scope, $http, $location) {
 			else color = "#0D8ECF";
 			value = value / 1000;
 		    value = Math.round(value*100)/100;
+			$scope.total = $scope.total + value;
 			$scope.chartData.push({
-			  hour: time + ":00",
+			  hour: time,
 			  value: value,
 			  color: color
 			});
 		  });
+		  $scope.total = Math.round($scope.total*100)/100;
+		  $("#totalEnergy").html($scope.total + " kWh");
 		  //Building the column chart
 		  //AmCharts.ready(function() {
 			
@@ -65,7 +77,7 @@ function HomeCtrl($route, $scope, $http, $location) {
 
 			// value
 			var valueAxis = new AmCharts.ValueAxis();
-			valueAxis.title = "Energy";
+			valueAxis.title = "Energy (kWh)";
 			valueAxis.dashLength = 5;
 			$scope.chart.addValueAxis(valueAxis);
 

@@ -12,9 +12,9 @@ app.config([ '$routeProvider', function($routeProvider) {
   }).when('/flash', {
     templateUrl : 'p/public/flash.html',
     controller : FlashCtrl
-  }).when('/light', {
+  /*}).when('/light', {
     templateUrl : 'p/public/light.html',
-    controller : HomeCtrl
+    controller : HomeCtrl*/
   }).otherwise({
     redirectTo : '/'
   });
