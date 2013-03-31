@@ -42,7 +42,6 @@
 		jsonpCallback: 'jsonpCallback',
 		success: function (response) {
 		  var cmdb = response["cmdb"];
-		  var children = cmdb["children"];
 		  var list = "";
 		  var relayStatus = "";
 		  var name = "";
@@ -52,14 +51,33 @@
 		 function parseConfig(configs) {
 			list += "<li>";
 			if(configs["displayName"]) {
-			  list += configs["displayName"];
-			  console.log("  =====  " + configs["displayName"])
+			  relayStatus = configs["relayStatus"];
+			  name = configs["name"];
+			  if(!configs["children"]) {
+				  if(relayStatus==0) {
+					title = "Click here to turn on the light for this node";
+					icon = "1364470296_23413.ico";
+					list += "<a href=\"#node\" data-toggle=\"tooltip\" title=\""+title+"\" data-original-title=\"Default tooltip\">" + configs["displayName"] + " <img src=\"../../img/"+icon+"\" style=\"with:18px;height:18px;\"></img></a>";
+				  } else if(relayStatus==1) {
+					title = "Click here to turn off the light for this node";
+					icon = "1364470318_6074.ico";
+					list += "<a href=\"#node\" data-toggle=\"tooltip\" title=\""+title+"\" data-original-title=\"Default tooltip\">" + configs["displayName"] + " <img src=\"../../img/"+icon+"\" style=\"with:18px;height:18px;\"></img></a>";
+				  } else {
+					icon = "1364470339_MB__light.png";	
+					title = "This light is not able to use";
+					list += "<span data-toggle=\"tooltip\" title=\""+title+"\" data-original-title=\"Default tooltip\">" + configs["displayName"] + " <img src=\"../../img/"+icon+"\" style=\"with:18px;height:18px;\"></img></span>";					  
+				  }
+			  } else {
+				  list += configs["displayName"];
+			  }
 		    } 
 			for (var element in configs) {				  
 				if (typeof(configs[element]) == "object") {
-					list += "<ul>";
-					parseConfig(configs[element]);
-					list += "</ul>";
+					if(configs["displayName"]) {
+					  list += "<ul>";
+					  parseConfig(configs[element]);
+					  list += "</ul>";
+					} else parseConfig(configs[element]);
 				}
 			}
 			list += "</li>";
@@ -100,9 +118,10 @@
 				list += "</li>";
 
 		  }*/
+		  list = list.replaceAll("<li><li>","<li>");
+		  list = list.replaceAll("</li></li>","</li>");
 		  list = list.replaceAll("<li></li>","");
 		  list = list.replaceAll("<ul></ul>","");
-		  console.log(list);
 		  //Fill all of control nodes list
 		  $("#tree").html(list);		
 		  //Init tree 
