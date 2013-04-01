@@ -1,55 +1,58 @@
 'use strict';
 
+ 
  function NodeCtrl($scope, $http, $location, $route) {
-   $(document).ready(function() {
+	 
+	 window.turnLightAction = function(name,relayStatus) {
+	   var actionUrl = "http://test.greenkoncepts.com/ems/services/ResourceService/control?key=2.1363230266.a33dbb9f87479c8ea2aad6c5d775c2f5285dde2&id="+name+"&command=Relay+Status%3D"+relayStatus+"%3BAnalog+Output%3D100&isGroupControl=false&callerID=callerID";
+	   $.ajax({
+		 url: actionUrl,
+		 type: 'GET',
+		 dataType: 'jsonp',
+		 contentType: "application/jsonp",
+		 crossDomain: true,
+		 jsonpCallback: 'jsonpCallback',
+		 success: function (response) {
+		   location.reload();
+		   return;
+		 },
+		 error: function (response) {
+		 }
+	   });
 	   
-	   String.prototype.replaceAll = function( token, newToken, ignoreCase ) {
-			var _token;
-			var str = this + "";
-			var i = -1;
+	 }
+	 
+	 String.prototype.replaceAll = function( token, newToken, ignoreCase ) {
+		var _token;
+		var str = this + "";
+		var i = -1;
 
-			if ( typeof token === "string" ) {
+		if ( typeof token === "string" ) {
 
-				if ( ignoreCase ) {
+			if ( ignoreCase ) {
 
-					_token = token.toLowerCase();
+				_token = token.toLowerCase();
 
-					while( (
-						i = str.toLowerCase().indexOf(
-							token, i >= 0 ? i + newToken.length : 0
-						) ) !== -1
-					) {
-						str = str.substring( 0, i ) +
-							newToken +
-							str.substring( i + token.length );
-					}
-
-				} else {
-					return this.split( token ).join( newToken );
+				while( (
+					i = str.toLowerCase().indexOf(
+						token, i >= 0 ? i + newToken.length : 0
+					) ) !== -1
+				) {
+					str = str.substring( 0, i ) +
+						newToken +
+						str.substring( i + token.length );
 				}
 
+			} else {
+				return this.split( token ).join( newToken );
 			}
-		return str;
-		};
-		
-		function lightAction(name, relayStatus) {
-		  var actionUrl = "http://test.greenkoncepts.com/ems/services/ResourceService/control?key=2.1363230266.a33dbb9f87479c8ea2aad6c5d775c2f5285dde2&id="+name+"&command=Relay+Status%3D"+relayStatus+"%3BAnalog+Output%3D100&isGroupControl=false&callerID=callerID";
-		  $.ajax({
-			url: actionUrl,
-			type: 'GET',
-			dataType: 'jsonp',
-			contentType: "application/jsonp",
-			crossDomain: true,
-			jsonpCallback: 'jsonpCallback',
-			success: function (response) {
-			  $route.reload();
-			},
-			error: function (response) {
-		    }
-		  });
+
 		}
-
-
+	return str;
+	};			
+		
+	 
+   $(document).ready(function() {
 	   $.ajax({
 		url: 'http://test.greenkoncepts.com/ems/services/ResourceService/controlNodes?key=2.1363230142.ba020be798720bab865be198bdde242f7b158b8&nodeName=&callerID=callerID',
 		type: 'GET',
@@ -65,6 +68,8 @@
 		  var title = "";
 		  var icon = "";
 		  
+		  
+		  
 		 function parseConfig(configs) {
 			list += "<li>";
 			if(configs["displayName"]) {
@@ -74,11 +79,11 @@
 				  if(relayStatus==0) {
 					title = "Click here to turn on the light for this node";
 					icon = "1364470296_23413.ico";
-					list += "<a href=\"#node\" data-toggle=\"tooltip\" title=\""+title+"\" data-original-title=\"Default tooltip\"><strong>" + configs["displayName"] + "</strong> <img src=\"../../img/"+icon+"\" style=\"with:18px;height:18px;\"></img></a>";
+					list += "<a onclick=\"turnLightAction('"+name+"','1');\" data-toggle=\"tooltip\" title=\""+title+"\" data-original-title=\"Default tooltip\"><strong>" + configs["displayName"] + "</strong> <img src=\"../../img/"+icon+"\" style=\"with:18px;height:18px;\"></img></a>";
 				  } else if(relayStatus==1) {
 					title = "Click here to turn off the light for this node";
 					icon = "1364470318_6074.ico";
-					list += "<a href=\"#node\" data-toggle=\"tooltip\" title=\""+title+"\" data-original-title=\"Default tooltip\"><strong>" + configs["displayName"] + "</strong> <img src=\"../../img/"+icon+"\" style=\"with:18px;height:18px;\"></img></a>";
+					list += "<a onclick=\"turnLightAction('"+name+"','0');\" data-toggle=\"tooltip\" title=\""+title+"\" data-original-title=\"Default tooltip\"><strong>" + configs["displayName"] + "</strong> <img src=\"../../img/"+icon+"\" style=\"with:18px;height:18px;\"></img></a>";
 				  } else {
 					icon = "1364470339_MB__light.png";	
 					title = "This light is not able to use";
@@ -99,7 +104,9 @@
 			}
 			list += "</li>";
 		 }
-		 parseConfig(cmdb);		  
+		 parseConfig(cmdb);	
+		 
+		 
 
 		 
 		  list = list.replaceAll("<li><li>","<li>");
