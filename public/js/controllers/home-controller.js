@@ -6,15 +6,17 @@ function HomeCtrl($route, $scope, $http, $location) {
 	  $scope.chartData = [];
 	  
 	  $scope.total = 0;
-
-	  var startDate = new Date(1363143611618);
+	  
+	  var today = new Date().getTime();
+	  var yesterday = today - 86400000;
+	  var startDate = new Date(today);
 	  $scope.startTime = startDate.toUTCString();
-	  var endDate = new Date(1363230011619);
+	  var endDate = new Date(yesterday);
 	  $scope.endTime = endDate.toUTCString();
 	  
   $(document).ready(function() { 
 	   $.ajax({
-		url: 'http://test.greenkoncepts.com/ems/services/ResourceService/binnedEvents?key=2.1363230012.d593eb3472e8f0b8346fae1bf53aa4e38f6d96f4&nodeNames=ci_gkoffice&beginDate=1363143611618&endDate=1363230011619&binEnum=1&dataNames=Energy&callerID=callerID',
+		url: 'http://test.greenkoncepts.com/ems/services/ResourceService/binnedEvents?key=2.1363230012.d593eb3472e8f0b8346fae1bf53aa4e38f6d96f4&nodeNames=ci_gkoffice&beginDate='+today+'&endDate='+yesterday+'&binEnum=1&dataNames=Energy&callerID=callerID',
 		type: 'GET',
 		dataType: 'jsonp',
 		contentType: "application/jsonp",
