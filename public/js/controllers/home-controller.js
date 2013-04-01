@@ -10,9 +10,9 @@ function HomeCtrl($route, $scope, $http, $location) {
 	  var today = new Date().getTime();
 	  var yesterday = today - 86400000;
 	  var startDate = new Date(today);
-	  $scope.startTime = startDate.toUTCString();
+	  $scope.startTime = startDate.toLocaleDateString();
 	  var endDate = new Date(yesterday);
-	  $scope.endTime = endDate.toUTCString();
+	  $scope.endTime = endDate.toLocaleDateString();
 	  
   $(document).ready(function() { 
 	   $.ajax({
