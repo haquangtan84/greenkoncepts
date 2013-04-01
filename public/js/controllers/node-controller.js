@@ -1,6 +1,6 @@
 'use strict';
 
- function NodeCtrl($scope, $http, $location) {
+ function NodeCtrl($scope, $http, $location, $route) {
    $(document).ready(function() {
 	   
 	   String.prototype.replaceAll = function( token, newToken, ignoreCase ) {
@@ -31,6 +31,23 @@
 			}
 		return str;
 		};
+		
+		function lightAction(name, relayStatus) {
+		  var actionUrl = "http://test.greenkoncepts.com/ems/services/ResourceService/control?key=2.1363230266.a33dbb9f87479c8ea2aad6c5d775c2f5285dde2&id="+name+"&command=Relay+Status%3D"+relayStatus+"%3BAnalog+Output%3D100&isGroupControl=false&callerID=callerID";
+		  $.ajax({
+			url: actionUrl,
+			type: 'GET',
+			dataType: 'jsonp',
+			contentType: "application/jsonp",
+			crossDomain: true,
+			jsonpCallback: 'jsonpCallback',
+			success: function (response) {
+			  $route.reload();
+			},
+			error: function (response) {
+		    }
+		  });
+		}
 
 
 	   $.ajax({
@@ -57,18 +74,18 @@
 				  if(relayStatus==0) {
 					title = "Click here to turn on the light for this node";
 					icon = "1364470296_23413.ico";
-					list += "<a href=\"#node\" data-toggle=\"tooltip\" title=\""+title+"\" data-original-title=\"Default tooltip\">" + configs["displayName"] + " <img src=\"../../img/"+icon+"\" style=\"with:18px;height:18px;\"></img></a>";
+					list += "<a href=\"#node\" data-toggle=\"tooltip\" title=\""+title+"\" data-original-title=\"Default tooltip\"><strong>" + configs["displayName"] + "</strong> <img src=\"../../img/"+icon+"\" style=\"with:18px;height:18px;\"></img></a>";
 				  } else if(relayStatus==1) {
 					title = "Click here to turn off the light for this node";
 					icon = "1364470318_6074.ico";
-					list += "<a href=\"#node\" data-toggle=\"tooltip\" title=\""+title+"\" data-original-title=\"Default tooltip\">" + configs["displayName"] + " <img src=\"../../img/"+icon+"\" style=\"with:18px;height:18px;\"></img></a>";
+					list += "<a href=\"#node\" data-toggle=\"tooltip\" title=\""+title+"\" data-original-title=\"Default tooltip\"><strong>" + configs["displayName"] + "</strong> <img src=\"../../img/"+icon+"\" style=\"with:18px;height:18px;\"></img></a>";
 				  } else {
 					icon = "1364470339_MB__light.png";	
 					title = "This light is not able to use";
-					list += "<span data-toggle=\"tooltip\" title=\""+title+"\" data-original-title=\"Default tooltip\">" + configs["displayName"] + " <img src=\"../../img/"+icon+"\" style=\"with:18px;height:18px;\"></img></span>";					  
+					list += "<span data-toggle=\"tooltip\" title=\""+title+"\" data-original-title=\"Default tooltip\"><strong>" + configs["displayName"] + "</strong> <img src=\"../../img/"+icon+"\" style=\"with:16px;height:16px;\"></img></span>";					  
 				  }
 			  } else {
-				  list += configs["displayName"];
+				  list += "<strong>" + configs["displayName"] + "</strong>";
 			  }
 		    } 
 			for (var element in configs) {				  
@@ -82,42 +99,9 @@
 			}
 			list += "</li>";
 		 }
-		 parseConfig(cmdb);
-		  
+		 parseConfig(cmdb);		  
 
-		  /*$.each(children, recurse);
-          
-		  function recurse(key, val) {
-				list += "<li>";
-				if (val instanceof Object) {
-					if(key=="displayName")
-					  list+= val + "<ul>";
-					else
-					  list += "<ul>";
-					$.each(val, recurse);
-					list += "</ul>";
-				} else {
-					if(key=="relayStatus") relayStatus = val;
-					if(key=="name") name = val;
-					if(key=="displayName") {
-						  if(relayStatus==0) {
-							title = "Click here to turn on the light for this node";
-							icon = "1364470296_23413.ico";
-							list += "<a href=\"#node\" data-toggle=\"tooltip\" title=\""+title+"\" data-original-title=\"Default tooltip\">" + val + " <img src=\"../../img/"+icon+"\" style=\"with:20px;height:20px;\"></img></a>";
-						 } else if(relayStatus==1) {
-							title = "Click here to turn off the light for this node";
-							icon = "1364470318_6074.ico";
-							list += "<a href=\"#node\" data-toggle=\"tooltip\" title=\""+title+"\" data-original-title=\"Default tooltip\">" + val + " <img src=\"../../img/"+icon+"\" style=\"with:20px;height:20px;\"></img></a>";
-						 } else {
-						   icon = "1364470339_MB__light.png";	
-						   title = "This light is not able to use";
-						   list += "<a href=\"#node\" data-toggle=\"tooltip\" title=\""+title+"\" data-original-title=\"Default tooltip\">" + val + " <img src=\"../../img/"+icon+"\" style=\"with:18px;height:18px;\"></img></a>";					  
-						 }
-					}
-				}
-				list += "</li>";
-
-		  }*/
+		 
 		  list = list.replaceAll("<li><li>","<li>");
 		  list = list.replaceAll("</li></li>","</li>");
 		  list = list.replaceAll("<li></li>","");
@@ -127,7 +111,7 @@
 		  //Init tree 
 		  $(function() {
 			$("#tree").treeview({
-				collapsed: true,
+				expanded: true,
 				animated: "medium",
 				control:"#sidetreecontrol",
 				persist: "location"
