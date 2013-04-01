@@ -29,9 +29,9 @@ function HomeCtrl($route, $scope, $http, $location) {
 			var timestamp = object["timestamp"];
 			var time = timestamp["time"];
 			var d = new Date(time);
-            var minutes = d.getUTCMinutes();
+            var minutes = d.getMinutes();
 			if(minutes < 10) minutes = "0" + minutes;
-			time = d.getUTCHours() + ":" + minutes;
+			time = d.getHours() + ":" + minutes;
 			
 			var dataBean = object["dataBean"];
 			var value = dataBean[0]["value"];
