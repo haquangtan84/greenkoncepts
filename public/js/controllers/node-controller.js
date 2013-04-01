@@ -3,7 +3,8 @@
  
  function NodeCtrl($scope, $http, $location, $route) {
 	 
-	 window.turnLightAction = function(name,relayStatus) {
+	 window.turnLightAction = function(obj, name, relayStatus) {
+	   var imgElem = $(obj).find('img')[0];	   
 	   var actionUrl = "http://test.greenkoncepts.com/ems/services/ResourceService/control?key=2.1363230266.a33dbb9f87479c8ea2aad6c5d775c2f5285dde2&id="+name+"&command=Relay+Status%3D"+relayStatus+"%3BAnalog+Output%3D100&isGroupControl=false&callerID=callerID";
 	   $.ajax({
 		 url: actionUrl,
@@ -13,7 +14,9 @@
 		 crossDomain: true,
 		 jsonpCallback: 'jsonpCallback',
 		 success: function (response) {
-		   location.reload();
+		   if(relayStatus==1) $(imgElem).attr('src','../../img/1364470318_6074.ico');
+		   else if(relayStatus==0) $(imgElem).attr('src','../../img/1364470296_23413.ico');
+		   else $(imgElem).attr('src','../../img/1364470339_MB__light.png');
 		   return;
 		 },
 		 error: function (response) {
@@ -79,11 +82,11 @@
 				  if(relayStatus==0) {
 					title = "Click here to turn on the light for this node";
 					icon = "1364470296_23413.ico";
-					list += "<a onclick=\"turnLightAction('"+name+"','1');\" data-toggle=\"tooltip\" title=\""+title+"\" data-original-title=\"Default tooltip\"><strong>" + configs["displayName"] + "</strong> <img src=\"../../img/"+icon+"\" style=\"with:18px;height:18px;\"></img></a>";
+					list += "<a onclick=\"turnLightAction(this, '"+name+"','1');\" data-toggle=\"tooltip\" title=\""+title+"\" data-original-title=\"Default tooltip\"><strong>" + configs["displayName"] + "</strong> <img src=\"../../img/"+icon+"\" style=\"with:18px;height:18px;\"></img></a>";
 				  } else if(relayStatus==1) {
 					title = "Click here to turn off the light for this node";
 					icon = "1364470318_6074.ico";
-					list += "<a onclick=\"turnLightAction('"+name+"','0');\" data-toggle=\"tooltip\" title=\""+title+"\" data-original-title=\"Default tooltip\"><strong>" + configs["displayName"] + "</strong> <img src=\"../../img/"+icon+"\" style=\"with:18px;height:18px;\"></img></a>";
+					list += "<a onclick=\"turnLightAction(this, '"+name+"','0');\" data-toggle=\"tooltip\" title=\""+title+"\" data-original-title=\"Default tooltip\"><strong>" + configs["displayName"] + "</strong> <img src=\"../../img/"+icon+"\" style=\"with:18px;height:18px;\"></img></a>";
 				  } else {
 					icon = "1364470339_MB__light.png";	
 					title = "This light is not able to use";
